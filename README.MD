@@ -25,7 +25,6 @@ _Using best practices and taking thorough notes please complete the objectives b
 DevOps Work requires continuous integration.
 
 - Create a *private* `Fork` of this repo into your own Github account 
-- Add user `stefancrain` and `vbheemineni` to your forked repo
 - Make proper use of `git` branching workflow to complete the objectives below
 - Upon completion of all objectives create a merge request for review
 
