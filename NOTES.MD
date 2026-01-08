@@ -24,7 +24,7 @@ git branch --show-current
 ```
 
 Screenshot:
-![Healthcheck response](./assets/healthcheck.gif)
+![Healthcheck response](./assets/healthcheck.png)
 
 ## Objective #2 : Review and publish the app
 
