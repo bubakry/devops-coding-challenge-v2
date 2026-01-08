@@ -1,20 +1,20 @@
-FROM python:latest
+FROM python:3.10-slim
 
-ENV CONTAINER_LOCALE="en_US.UTF-8"
-ENV CONTAINER_TZ="America/New_York"
-EXPOSE 80
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1 \
+    PORT=8080
 
-COPY package.tar.gz /bin/
+WORKDIR /app
+RUN addgroup --system app && adduser --system --ingroup app app
 
-COPY app/ /app/
-RUN pip install -r /app/requirements.txt
+COPY app/requirements.txt /app/
+RUN python -m pip install --no-cache-dir -r requirements.txt
+COPY --chown=app:app app/ /app/
+USER app
 
-RUN apt-get -qq update
-RUN apt-get -y upgrade \
-    && apt-get -qq install -y ca-certificates locales tzdata unzip
-RUN update-ca-certificates
-RUN apt-get -qq remove  ca-certificates locales tzdata
-RUN apt-get -qq clean autoclean
-RUN apt-get -qq -y --purge autoremove
+EXPOSE 8080
+HEALTHCHECK --interval=30s --timeout=5s --retries=3 --start-period=10s \
+  CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8080/healthcheck').read()"
 
-ENTRYPOINT [ "python", "/app/app.py" ]
+CMD ["python", "app.py"]

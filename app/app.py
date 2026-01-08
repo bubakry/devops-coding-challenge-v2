@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask
 from flask import jsonify
 import glob
@@ -18,4 +20,5 @@ def health_check():
     return jsonify({'status': 'OK'})
 
 if __name__ == '__main__':
-    app.run('0.0.0.0', 80)
+    port = int(os.getenv("PORT", "8080"))
+    app.run('0.0.0.0', port)

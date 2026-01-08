@@ -1,9 +1,21 @@
 version: '3'
 services:
-  node-server:
+  app:
     build: .
     ports:
-      - "7000:80"
+      - "8080:8080"
     environment:
-      PASSWORD: "':te{]GY.[e|G%L|e<*t-<*qwlP90`/G"
-      DEBUG: "YES"
+      PORT: "8080"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8080/healthcheck').read()"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    read_only: true
+    tmpfs:
+      - /tmp
